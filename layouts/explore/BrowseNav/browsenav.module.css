@@ -1,0 +1,30 @@
+.root {
+  backdrop-filter: blur(16px);
+}
+
+[data-mantine-color-scheme="light"] .root {
+  border-bottom: 1px solid var(--mantine-color-gray-3);
+  background: var(--mantine-color-gray-3);
+}
+
+[data-mantine-color-scheme="dark"] .root {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: #0d0d17ee;
+}
+
+.tab {
+  font-size: var(--mantine-font-size-xs);
+  padding: var(--mantine-spacing-xs);
+  border-bottom: 1px solid transparent;
+  opacity: 0.5;
+  transition: 0.3s ease-in-out;
+}
+
+.tab:hover {
+  opacity: 1;
+}
+
+.tab_active {
+  opacity: 1;
+  border-bottom: 1px solid white;
+}

@@ -1,0 +1,7 @@
+[data-mantine-color-scheme="light"] .root {
+  border-bottom: 1px solid var(--mantine-color-gray-3);
+}
+
+[data-mantine-color-scheme="dark"] .root {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
