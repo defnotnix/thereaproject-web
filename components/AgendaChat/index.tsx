@@ -20,6 +20,7 @@ import {
   Tabs,
   Text,
   TextInput,
+  Tooltip,
 } from "@mantine/core";
 import {
   ArrowDownIcon,
@@ -506,48 +507,52 @@ export function ChatRender({
 
                             {!isUserMessage(msg) && (
                               <Group gap={0}>
-                                <Button
-                                  size="xs"
-                                  h={24}
-                                  px={6}
-                                  leftSection={<ThumbsUpIcon />}
-                                  variant={
-                                    msg.user_vote === "upvote"
-                                      ? "light"
-                                      : "subtle"
-                                  }
-                                  color={
-                                    msg.user_vote === "upvote"
-                                      ? "blue"
-                                      : undefined
-                                  }
-                                  onClick={() => handleVote(msg.id, "upvote")}
-                                  loading={votingMessageIds.has(msg.id)}
-                                  disabled={votingMessageIds.has(msg.id)}
-                                >
-                                  {msg.upvote_count}
-                                </Button>
-                                <Button
-                                  h={24}
-                                  px={6}
-                                  size="xs"
-                                  leftSection={<ThumbsDownIcon />}
-                                  variant={
-                                    msg.user_vote === "downvote"
-                                      ? "light"
-                                      : "subtle"
-                                  }
-                                  color={
-                                    msg.user_vote === "downvote"
-                                      ? "red"
-                                      : undefined
-                                  }
-                                  onClick={() => handleVote(msg.id, "downvote")}
-                                  loading={votingMessageIds.has(msg.id)}
-                                  disabled={votingMessageIds.has(msg.id)}
-                                >
-                                  {msg.downvote_count}
-                                </Button>
+                                <Tooltip label="Disabled for a quick bug fixing">
+                                  <Button
+                                    size="xs"
+                                    h={24}
+                                    px={6}
+                                    leftSection={<ThumbsUpIcon />}
+                                    variant={
+                                      msg.user_vote === "upvote"
+                                        ? "light"
+                                        : "subtle"
+                                    }
+                                    color={
+                                      msg.user_vote === "upvote"
+                                        ? "blue"
+                                        : undefined
+                                    }
+                                    onClick={() => handleVote(msg.id, "upvote")}
+                                    loading={votingMessageIds.has(msg.id)}
+                                    disabled={true}
+                                  >
+                                    {msg.upvote_count}
+                                  </Button>
+                                </Tooltip>
+                                <Tooltip label="Disabled for a quick bug fixing">
+                                  <Button
+                                    h={24}
+                                    px={6}
+                                    size="xs"
+                                    leftSection={<ThumbsDownIcon />}
+                                    variant={
+                                      msg.user_vote === "downvote"
+                                        ? "light"
+                                        : "subtle"
+                                    }
+                                    color={
+                                      msg.user_vote === "downvote"
+                                        ? "red"
+                                        : undefined
+                                    }
+                                    onClick={() => handleVote(msg.id, "downvote")}
+                                    loading={votingMessageIds.has(msg.id)}
+                                    disabled={true}
+                                  >
+                                    {msg.downvote_count}
+                                  </Button>
+                                </Tooltip>
                               </Group>
                             )}
                           </Stack>

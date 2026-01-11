@@ -10,6 +10,7 @@ import SignIn from "./OverlayContent/SignIn";
 import Onboarding from "./OverlayContent/Onboarding";
 import SubmitAgenda from "./OverlayContent/SubmitAgenda";
 import { ProfileOverlay } from "./OverlayContent/UserProfile";
+import { ModalNotice } from "./ModalNotice";
 import {
   Container,
   Paper,
@@ -33,6 +34,7 @@ export function LayoutSite({ children }: any) {
 
   return (
     <>
+      <ModalNotice />
       <SiteNav />
 
       <main
