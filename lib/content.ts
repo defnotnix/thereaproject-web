@@ -37,6 +37,11 @@ export const translations: Record<Language, Record<string, string>> = {
     "overlay.signIn": "Sign In",
     "overlay.signUp": "Sign Up",
     "overlay.submitAgenda": "Submit Agenda",
+
+    // Browse Navigation
+    "browse.currentlyOn": "Currently on",
+    "browse.agendaBrowse": "Agenda-Browse",
+    "browse.featuredAgendas": "Featured Agendas",
   },
   np: {
     // Initial section
@@ -74,6 +79,11 @@ export const translations: Record<Language, Record<string, string>> = {
     "overlay.signIn": "साइन इन",
     "overlay.signUp": "दर्ता गर्नुहोस्",
     "overlay.submitAgenda": "एजेन्डा बुझाउनुहोस्",
+
+    // Browse Navigation
+    "browse.currentlyOn": "वर्तमानमा",
+    "browse.agendaBrowse": "एजेन्डा-ब्राउज",
+    "browse.featuredAgendas": "विशेष एजेन्डा",
   },
 };
 

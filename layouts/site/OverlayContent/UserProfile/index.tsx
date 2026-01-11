@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Stack,
   Text,
@@ -54,6 +55,7 @@ interface ProfileOverlayProps {
 }
 
 export function ProfileOverlay({ onClose }: ProfileOverlayProps) {
+  const router = useRouter();
   const { user: authUser, accessToken, logout } = useAuthStore();
   const [activeSection, setActiveSection] = useState<string | null>(null);
 
@@ -234,23 +236,25 @@ export function ProfileOverlay({ onClose }: ProfileOverlayProps) {
   };
 
   const menuItems = [
-    { id: "account-status", label: "Account Status", icon: LightbulbIcon },
-    { id: "followed-agendas", label: "Followed Agendas", icon: StarIcon },
+    { id: "account-status", label: "Account Status", icon: LightbulbIcon, disabled: false },
+    { id: "followed-agendas", label: "Followed Agendas", icon: StarIcon, disabled: false },
     {
       id: "moderator-settings",
       label: "Moderator Settings",
       icon: FlagPennantIcon,
+      disabled: false,
     },
-    { id: "preferences", label: "Preferences", icon: GearSixIcon },
-    { id: "terms-of-service", label: "Terms of Service", icon: FileTextIcon },
-    { id: "privacy-policy", label: "Privacy Policy", icon: ShieldCheckIcon },
+    { id: "preferences", label: "Preferences", icon: GearSixIcon, disabled: true },
+    { id: "terms-of-service", label: "Terms of Service", icon: FileTextIcon, disabled: false },
+    { id: "privacy-policy", label: "Privacy Policy", icon: ShieldCheckIcon, disabled: false },
 
-    { id: "feedback", label: "Feedback", icon: ChatTeardropIcon },
-    { id: "language", label: "Language", icon: GlobeIcon },
+    { id: "feedback", label: "Feedback", icon: ChatTeardropIcon, disabled: true },
+    { id: "language", label: "Language", icon: GlobeIcon, disabled: true },
     {
       id: "account-management",
       label: "Deactivate / Delete Account",
       icon: WarningCircleIcon,
+      disabled: true,
     },
   ];
 
@@ -291,23 +295,36 @@ export function ProfileOverlay({ onClose }: ProfileOverlayProps) {
       {activeSection === null ? (
         // Menu View
         <Stack gap={0} py="xl">
-          {menuItems.map((item, index) => (
+          {menuItems.map((item) => (
             <div key={item.id}>
               <Button
                 color="gray"
                 variant="subtle"
                 justify="space-between"
                 fullWidth
-                onClick={() => setActiveSection(item.id)}
+                onClick={() => {
+                  if (item.disabled) return;
+                  if (item.id === "terms-of-service") {
+                    router.push("/terms-of-service");
+                    onClose();
+                  } else if (item.id === "privacy-policy") {
+                    router.push("/privacy-policy");
+                    onClose();
+                  } else {
+                    setActiveSection(item.id);
+                  }
+                }}
                 rightSection={<CaretRightIcon size={16} />}
                 p="xs"
                 h="auto"
                 radius={0}
+                disabled={item.disabled}
+                opacity={item.disabled ? 0.5 : 1}
               >
                 <Group gap="xs">
                   <item.icon weight="fill" size={16} />
                   <Text size="xs" fw={500}>
-                    {item.label}
+                    {item.label} {item.disabled && "(Under Construction)"}
                   </Text>
                 </Group>
               </Button>
@@ -440,33 +457,21 @@ export function ProfileOverlay({ onClose }: ProfileOverlayProps) {
 
             {activeSection === "preferences" && <PreferencesTab />}
 
-            {activeSection === "terms-of-service" && (
-              <Stack gap="md">
-                <Text c="dimmed">Terms of Service content coming soon</Text>
-              </Stack>
-            )}
-
-            {activeSection === "privacy-policy" && (
-              <Stack gap="md">
-                <Text c="dimmed">Privacy Policy content coming soon</Text>
-              </Stack>
-            )}
-
             {activeSection === "account-management" && (
               <Stack gap="md">
-                <Text c="dimmed">Account management options coming soon</Text>
+                <Text c="dimmed">Account management options coming soon (Under Construction)</Text>
               </Stack>
             )}
 
             {activeSection === "feedback" && (
               <Stack gap="md">
-                <Text c="dimmed">Feedback form coming soon</Text>
+                <Text c="dimmed">Feedback form coming soon (Under Construction)</Text>
               </Stack>
             )}
 
             {activeSection === "language" && (
               <Stack gap="md">
-                <Text c="dimmed">Language settings coming soon</Text>
+                <Text c="dimmed">Language settings coming soon (Under Construction)</Text>
               </Stack>
             )}
           </Stack>

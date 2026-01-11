@@ -21,7 +21,7 @@ import {
 } from "@phosphor-icons/react";
 //store
 import { useAuthStore } from "@/modules/auth";
-import { useLanguage } from "@/store/language.store";
+import { useLanguage, useSetLanguage } from "@/store/language.store";
 import {
   useSideContentStatus,
   useSetSideContentStatus,
@@ -46,6 +46,7 @@ export function SiteNav() {
 
   const { isAuthenticated, user, logout } = useAuthStore();
   const language = useLanguage();
+  const setLanguage = useSetLanguage();
   const overlayState = useSideContentStatus();
   const setOverlayState = useSetSideContentStatus();
 
@@ -84,7 +85,7 @@ export function SiteNav() {
                 onClick={() => setOverlayState("submit-agenda")}
                 rightSection={<ArrowUpRightIcon weight="bold" />}
               >
-                Submit your Agenda.
+                {getTranslation(language, "nav.submitAgenda")}
               </Button>
 
               {overlayState ? (
@@ -155,7 +156,7 @@ export function SiteNav() {
                   value={language}
                   onChange={(value) => {
                     if (value === "en" || value === "np") {
-                      // Handle language change here
+                      setLanguage(value);
                     }
                   }}
                   size="xs"

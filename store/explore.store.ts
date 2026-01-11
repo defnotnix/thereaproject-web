@@ -13,6 +13,7 @@ export interface Tab {
   label: string;
   icon: Icon;
   subTabs?: SubTab[];
+  disabled?: boolean;
 }
 
 interface ExploreState {

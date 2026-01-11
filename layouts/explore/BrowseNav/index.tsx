@@ -18,16 +18,15 @@ import {
   useSetActiveTab,
   useSetExploreTabs,
 } from "@/store/explore.store";
-import {
-  MegaphoneSimpleIcon,
-  NewspaperIcon,
-  ScrollIcon,
-} from "@phosphor-icons/react";
+import { useLanguage } from "@/store/language.store";
+import { getTranslation } from "@/lib/content";
+import { MegaphoneSimpleIcon, ScrollIcon } from "@phosphor-icons/react";
 
 export function BrowseNav() {
   // * DEFINITIONS
 
   // * STORE x CONTEXTS
+  const language = useLanguage();
   const tabs = useExploreTabs();
   const activeTabId = useActiveTabId();
   const setActiveTab = useSetActiveTab();
@@ -45,8 +44,8 @@ export function BrowseNav() {
           id: "announcements",
           label: "Announcements",
           icon: MegaphoneSimpleIcon,
+          disabled: true,
         },
-        { id: "fake-news", label: "Fake-News", icon: NewspaperIcon },
       ];
       setExploreTabs(defaultTabs);
     }
@@ -63,7 +62,7 @@ export function BrowseNav() {
           <SimpleGrid spacing={0} cols={{ base: 1, lg: 3 }}>
             <Group h={40} visibleFrom="lg">
               <Text c="dimmed" size="xs">
-                Currently on Agenda-Browse
+                {getTranslation(language, "browse.currentlyOn")} {getTranslation(language, "browse.agendaBrowse")}
               </Text>
             </Group>
 
@@ -76,7 +75,8 @@ export function BrowseNav() {
                   size="xs"
                   h={40}
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
+                  onClick={() => !tab.disabled && setActiveTab(tab.id)}
+                  disabled={tab.disabled}
                 >
                   <Group gap={"xs"}>
                     <tab.icon size={14} weight={"fill"} />
@@ -88,7 +88,7 @@ export function BrowseNav() {
 
             <Group h={40} justify="flex-end" visibleFrom="lg">
               <Text c="dimmed" size="xs">
-                Featured Agendas
+                {getTranslation(language, "browse.featuredAgendas")}
               </Text>
             </Group>
           </SimpleGrid>

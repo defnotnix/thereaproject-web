@@ -4,6 +4,7 @@ import { districts } from "./map.districts";
 
 import { Center, Container, Text } from "@mantine/core";
 import { useDistricts } from "@/store/site.store";
+import { usePathname } from "next/navigation";
 
 interface DynamicMapProps {
   activeDistrict?: number | null;
@@ -16,10 +17,13 @@ export function MapRender({
   onDistrictSelect = () => {},
   siteState = "default",
 }: DynamicMapProps) {
+  const Pathname = usePathname();
   const districtsData = useDistricts();
   const apiDistricts = districtsData?.results || [];
   const [hoveredDistrict, setHoveredDistrict] = useState<string | null>(null);
-  const [activeSvgDistrictCode, setActiveSvgDistrictCode] = useState<string | null>(null);
+  const [activeSvgDistrictCode, setActiveSvgDistrictCode] = useState<
+    string | null
+  >(null);
 
   const getDistrictName = (districtCode: string | undefined) => {
     return districts.find((d) => d.code === districtCode)?.name || "";
@@ -33,22 +37,23 @@ export function MapRender({
 
     // Find matching API district by name (case-insensitive, trimmed)
     const normalizedSvgName = svgDistrictName.toLowerCase().trim();
-    const matchedApiDistrict = apiDistricts.find(
-      (d) => {
-        const normalizedApiName = d.name.toLowerCase().trim();
-        return normalizedApiName === normalizedSvgName;
-      }
-    );
+    const matchedApiDistrict = apiDistricts.find((d) => {
+      const normalizedApiName = d.name.toLowerCase().trim();
+      return normalizedApiName === normalizedSvgName;
+    });
 
     if (!matchedApiDistrict) {
       console.warn(`No API district found for SVG name: "${svgDistrictName}"`);
-      console.warn("Available API districts:", apiDistricts.map(d => ({ id: d.id, name: d.name })));
+      console.warn(
+        "Available API districts:",
+        apiDistricts.map((d) => ({ id: d.id, name: d.name }))
+      );
     }
 
     if (!matchedApiDistrict?.id) return null;
 
     // Convert to number if string
-    return typeof matchedApiDistrict.id === 'string'
+    return typeof matchedApiDistrict.id === "string"
       ? parseInt(matchedApiDistrict.id)
       : matchedApiDistrict.id;
   };
@@ -61,7 +66,7 @@ export function MapRender({
 
     // Match district ID (handle both string and number comparisons)
     const apiDistrict = apiDistricts.find((d) => {
-      const districtId = typeof d.id === 'string' ? parseInt(d.id) : d.id;
+      const districtId = typeof d.id === "string" ? parseInt(d.id) : d.id;
       return districtId === apiDistrictId;
     });
     if (!apiDistrict) return undefined;
@@ -81,10 +86,13 @@ export function MapRender({
       svgDistrictName,
       apiDistrictId,
       activeDistrict,
-      apiDistricts: apiDistricts.map(d => ({ id: d.id, name: d.name }))
+      apiDistricts: apiDistricts.map((d) => ({ id: d.id, name: d.name })),
     });
 
-    if (activeDistrict === apiDistrictId && activeSvgDistrictCode === svgDistrictCode) {
+    if (
+      activeDistrict === apiDistrictId &&
+      activeSvgDistrictCode === svgDistrictCode
+    ) {
       onDistrictSelect(null);
       setActiveSvgDistrictCode(null);
     } else {
@@ -145,6 +153,7 @@ export function MapRender({
             bottom={32}
             style={{ pointerEvents: "none" }}
             visibleFrom="lg"
+            hidden={Pathname !== "/explore"}
           >
             {hoveredDistrict
               ? getDistrictName(hoveredDistrict)
