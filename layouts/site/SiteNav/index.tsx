@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Container,
   Group,
@@ -22,36 +22,54 @@ import {
 //store
 import { useAuthStore } from "@/modules/auth";
 import { useLanguage } from "@/store/language.store";
+import {
+  useSideContentStatus,
+  useSetSideContentStatus,
+} from "@/store/site.store";
 //lib
 import { getTranslation } from "@/lib/content";
 //styles
 import classes from "./sitenav.module.css";
+import { useRouter } from "next/navigation";
 
 export function SiteNav() {
   // * DEFINITIONS
-  const [overlayState, setOverlayState] = useState<string | null>(null);
-  const [navDrawerOpen, setNavDrawerOpen] = useState(false);
-  const [profileDrawerOpened, setProfileDrawerOpened] = useState(false);
+  const Router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
+
+  // * EFFECTS
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // * STORE
 
   const { isAuthenticated, user, logout } = useAuthStore();
   const language = useLanguage();
+  const overlayState = useSideContentStatus();
+  const setOverlayState = useSetSideContentStatus();
 
   // * HANDLERS
-  const onSetOverlayState = (state: string | null) => setOverlayState(state);
-  const onNavDrawerToggle = () => setNavDrawerOpen(!navDrawerOpen);
+  const onNavDrawerToggle = () => {
+    if (isAuthenticated) {
+      setOverlayState("user-profile");
+    } else {
+      setOverlayState("signin");
+    }
+  };
 
   return (
     <>
       <nav className={classes.root}>
-        <Container>
+        <Container className={classes.container}>
           <Group h={50} justify="space-between">
             <Group
               style={{
                 cursor: "pointer",
               }}
-              onClick={() => {}}
+              onClick={() => {
+                Router.push("/");
+              }}
             >
               <Text size="xs">{getTranslation(language, "nav.campaign")}</Text>
               <Text visibleFrom="md" size="xs" opacity={0.3}>
@@ -63,7 +81,7 @@ export function SiteNav() {
               <Button
                 size="xs"
                 variant="subtle"
-                onClick={() => onSetOverlayState(null)}
+                onClick={() => setOverlayState("submit-agenda")}
                 rightSection={<ArrowUpRightIcon weight="bold" />}
               >
                 Submit your Agenda.
@@ -73,7 +91,7 @@ export function SiteNav() {
                 <Button
                   size="xs"
                   variant="subtle"
-                  onClick={() => onSetOverlayState(null)}
+                  onClick={() => setOverlayState(null)}
                   leftSection={<XIcon weight="bold" />}
                 >
                   Back to App
@@ -105,7 +123,7 @@ export function SiteNav() {
                         </Menu.Item>
                         <Menu.Item
                           leftSection={<UserIcon />}
-                          onClick={() => setProfileDrawerOpened(true)}
+                          onClick={() => setOverlayState("user-profile")}
                         >
                           {getTranslation(language, "nav.profile")}
                         </Menu.Item>
@@ -119,38 +137,36 @@ export function SiteNav() {
                       </Menu.Dropdown>
                     </Menu>
                   ) : (
-                    <Button
-                      size="xs"
-                      onClick={() => onSetOverlayState("signin")}
-                    >
+                    <Button size="xs" onClick={() => setOverlayState("signin")}>
                       {getTranslation(language, "nav.signIn")}
                     </Button>
                   )}
                 </>
               )}
 
-              <Select
-                w={{ base: "auto", lg: 50 }}
-                data={[
-                  { value: "en", label: "EN" },
-                  { value: "np", label: "नेपा" },
-                ]}
-                value={language}
-                onChange={(value) => {
-                  if (value === "en" || value === "np") {
-                    // Handle language change here
-                  }
-                }}
-                size="xs"
-                searchable={false}
-                clearable={false}
-                style={{ minWidth: 60 }}
-                suppressHydrationWarning
-              />
+              {isMounted && (
+                <Select
+                  id="language-select"
+                  w={{ base: "auto", lg: 50 }}
+                  data={[
+                    { value: "en", label: "EN" },
+                    { value: "np", label: "नेपा" },
+                  ]}
+                  value={language}
+                  onChange={(value) => {
+                    if (value === "en" || value === "np") {
+                      // Handle language change here
+                    }
+                  }}
+                  size="xs"
+                  searchable={false}
+                  clearable={false}
+                  style={{ minWidth: 60 }}
+                />
+              )}
             </Group>
 
             <Burger
-              opened={navDrawerOpen}
               onClick={onNavDrawerToggle}
               size="sm"
               hiddenFrom="md"

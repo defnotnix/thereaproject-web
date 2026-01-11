@@ -2,14 +2,12 @@
   backdrop-filter: blur(16px);
 }
 
-[data-mantine-color-scheme="light"] .root {
+[data-mantine-color-scheme="light"] .container {
   border-bottom: 1px solid var(--mantine-color-gray-3);
-  background: var(--mantine-color-gray-3);
 }
 
-[data-mantine-color-scheme="dark"] .root {
+[data-mantine-color-scheme="dark"] .container {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  background: #0d0d17ee;
 }
 
 .tab {

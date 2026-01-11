@@ -1,0 +1,44 @@
+.threadsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.threadItem {
+  padding: 0.75rem;
+  border: 1px solid var(--mantine-color-gray-2);
+  border-radius: var(--mantine-radius-sm);
+  transition: all 200ms ease;
+
+  &:hover {
+    border-color: var(--mantine-color-gray-3);
+    background-color: var(--mantine-color-gray-0);
+  }
+}
+
+.threadItemActive {
+  border-color: var(--mantine-color-blue-5);
+  background-color: var(--mantine-color-blue-0);
+
+  &:hover {
+    border-color: var(--mantine-color-blue-6);
+  }
+}
+
+.messagesContainer {
+  flex: 1;
+  border: 1px solid var(--mantine-color-gray-2);
+  border-radius: var(--mantine-radius-sm);
+  background-color: var(--mantine-color-white);
+}
+
+.messageItem {
+  border: none;
+  background-color: var(--mantine-color-gray-0);
+  border-radius: var(--mantine-radius-sm);
+  border-left: 3px solid var(--mantine-color-gray-3);
+
+  &:hover {
+    border-left-color: var(--mantine-color-gray-4);
+  }
+}

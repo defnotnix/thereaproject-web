@@ -5,14 +5,27 @@ export const axiosInstance = axios.create({
 });
 
 // List of public endpoints that don't require authentication
+// These are generally list/detail endpoints that are readable without auth
 const PUBLIC_ENDPOINTS = [
   "/api/districts/",
+  "/api/threads/",  // Note: Reading threads is public, but replying requires auth
   "/api/auth/login/",
   "/api/auth/registration/",
   "/api/auth/google/",
   "/api/auth/google/registration/",
   "/api/auth/otp/",
   "/api/auth/token/refresh/",
+];
+
+// Protected endpoints that require authentication (higher priority than PUBLIC_ENDPOINTS)
+// These are operations like POST, PATCH, DELETE, or reading protected data
+const PROTECTED_ENDPOINTS = [
+  "/api/messages/",
+  "/api/messages/sync/",
+  "/api/agendas/",  // Agenda follow/unfollow, voting, and other mutations
+  "/api/moderators/",  // Moderator applications and management
+  "/api/moderation/",  // Moderation features (trust score, penalties, etc)
+  "/api/users/",  // User profile and settings
 ];
 
 let isRefreshing = false;
@@ -39,14 +52,33 @@ const processQueue = (
 
 // Add request interceptor to automatically attach auth token to protected endpoints
 axiosInstance.interceptors.request.use((config) => {
+  // Check if it's a public endpoint FIRST (and don't attach token)
   const isPublicEndpoint = PUBLIC_ENDPOINTS.some((endpoint) =>
     config.url?.startsWith(endpoint)
   );
 
-  if (!isPublicEndpoint) {
+  if (isPublicEndpoint) {
+    return config;
+  }
+
+  // Check if it's a protected endpoint
+  const isProtectedEndpoint = PROTECTED_ENDPOINTS.some((endpoint) =>
+    config.url?.startsWith(endpoint)
+  );
+
+  // Attach token if it's a protected endpoint OR not a public endpoint
+  const requiresAuth = isProtectedEndpoint || !isPublicEndpoint;
+
+  if (requiresAuth) {
     const token = sessionStorage.getItem("rea_access");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      // Debug log
+      if (typeof window !== "undefined") {
+        console.log(`[Axios] Attached token to ${config.url}: ${token.substring(0, 20)}...`);
+      }
+    } else {
+      console.warn(`[Axios] No token found for protected endpoint: ${config.url}`);
     }
   }
 
@@ -85,10 +117,12 @@ axiosInstance.interceptors.response.use(
       try {
         const refreshToken = sessionStorage.getItem("rea_refresh");
         if (!refreshToken) {
+          console.error("[Axios] No refresh token available");
           handleTokenExpiry();
           return Promise.reject(error);
         }
 
+        console.log("[Axios] Attempting to refresh token...");
         const response = await axiosInstance.post<{
           access: string;
           refresh: string;
@@ -110,11 +144,13 @@ axiosInstance.interceptors.response.use(
           refreshToken: newRefreshToken,
         });
 
+        console.log("[Axios] Token refreshed successfully");
         // Retry original request with new token
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         processQueue(null, newAccessToken);
         return axiosInstance(originalRequest);
       } catch (refreshError) {
+        console.error("[Axios] Token refresh failed:", refreshError);
         processQueue(refreshError as AxiosError, null);
         handleTokenExpiry();
         return Promise.reject(refreshError);

@@ -1,0 +1,41 @@
+.rootContainer {
+  transition: transform 0.3s ease;
+}
+
+.contentContainer {
+  pointer-events: none;
+  transform: translateX(-30%);
+  opacity: 0.3;
+}
+
+@media (max-width: 767px) {
+  .contentContainer {
+    opacity: 0;
+  }
+}
+
+.overlaySection {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  z-index: 100;
+  height: calc(100vh - 60px);
+  margin-top: 60px;
+}
+
+.overlayContainer {
+  display: flex;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.overlayPaper {
+  width: calc(100% - 32px);
+}
+
+@media (min-width: 768px) {
+  .overlayPaper {
+    width: calc(40% - 32px);
+  }
+}

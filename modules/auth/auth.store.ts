@@ -92,8 +92,8 @@ export const useAuthStore = create<AuthState>()(
             const response: LoginResponse = await loginUser(email, password);
             // Store tokens in sessionStorage
             if (typeof window !== "undefined") {
-              sessionStorage.setItem("kcatoken", response.access);
-              sessionStorage.setItem("kcrtoken", response.refresh);
+              sessionStorage.setItem("rea_access", response.access);
+              sessionStorage.setItem("rea_refresh", response.refresh);
             }
             set({
               user: {
@@ -129,8 +129,8 @@ export const useAuthStore = create<AuthState>()(
             const response: SignUpResponse = await signUpUser(payload);
             // Store tokens in sessionStorage
             if (typeof window !== "undefined") {
-              sessionStorage.setItem("kcatoken", response.access);
-              sessionStorage.setItem("kcrtoken", response.refresh);
+              sessionStorage.setItem("rea_access", response.access);
+              sessionStorage.setItem("rea_refresh", response.refresh);
             }
             set({
               user: {
@@ -168,8 +168,8 @@ export const useAuthStore = create<AuthState>()(
             const response: LoginResponse = await googleSignInUser({ access_token: token });
             // Store tokens in sessionStorage
             if (typeof window !== "undefined") {
-              sessionStorage.setItem("kcatoken", response.access);
-              sessionStorage.setItem("kcrtoken", response.refresh);
+              sessionStorage.setItem("rea_access", response.access);
+              sessionStorage.setItem("rea_refresh", response.refresh);
             }
             set({
               user: {
@@ -206,8 +206,8 @@ export const useAuthStore = create<AuthState>()(
             const response: SignUpResponse = await googleSignUpUser({ access_token: token });
             // Store tokens in sessionStorage
             if (typeof window !== "undefined") {
-              sessionStorage.setItem("kcatoken", response.access);
-              sessionStorage.setItem("kcrtoken", response.refresh);
+              sessionStorage.setItem("rea_access", response.access);
+              sessionStorage.setItem("rea_refresh", response.refresh);
             }
             set({
               user: {
@@ -265,8 +265,8 @@ export const useAuthStore = create<AuthState>()(
             // If backend returns tokens, store them
             if (response.access && response.refresh) {
               if (typeof window !== "undefined") {
-                sessionStorage.setItem("kcatoken", response.access);
-                sessionStorage.setItem("kcrtoken", response.refresh);
+                sessionStorage.setItem("rea_access", response.access);
+                sessionStorage.setItem("rea_refresh", response.refresh);
               }
               // Note: User data should be fetched from backend after verification
               set({
@@ -353,8 +353,8 @@ export const useAuthStore = create<AuthState>()(
           }
           // Clear tokens from sessionStorage
           if (typeof window !== "undefined") {
-            sessionStorage.removeItem("kcatoken");
-            sessionStorage.removeItem("kcrtoken");
+            sessionStorage.removeItem("rea_access");
+            sessionStorage.removeItem("rea_refresh");
           }
           set({
             user: null,

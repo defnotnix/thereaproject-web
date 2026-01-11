@@ -1,9 +1,12 @@
 "use client";
 
+import { ProfileNav } from "./ProfileNav";
+
 export function LayoutAgendaProfile({ children }: any) {
   return (
     <>
-      <header>this is for the agenda profile</header>
+      <ProfileNav />
+
       <main> {children}</main>
     </>
   );

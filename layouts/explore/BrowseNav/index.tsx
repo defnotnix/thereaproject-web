@@ -59,8 +59,8 @@ export function BrowseNav() {
   return (
     <>
       <nav className={classes.root}>
-        <Container>
-          <SimpleGrid cols={{ base: 1, lg: 3 }}>
+        <Container className={classes.container}>
+          <SimpleGrid spacing={0} cols={{ base: 1, lg: 3 }}>
             <Group h={40} visibleFrom="lg">
               <Text c="dimmed" size="xs">
                 Currently on Agenda-Browse

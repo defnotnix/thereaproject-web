@@ -2,7 +2,15 @@
   "permissions": {
     "allow": [
       "Bash(tree:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx next build)",
+      "Bash(dir \"c:\\\\Projects\\\\rea-v1\\\\reaweb\\\\modules\\\\app\")",
+      "Bash(dir:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)"
     ]
   }
 }

@@ -3,19 +3,21 @@
 import { create } from "zustand";
 import { districtAPI, type DistrictsResponse } from "@/lib/api/districts";
 
+type OverlayType = "signin" | "onboarding" | "submit-agenda" | "user-profile";
+
 interface SiteState {
-  sideContentStatus: boolean;
+  sideContentStatus: OverlayType | null;
   loadingStatus: boolean;
   districts: DistrictsResponse | null;
   districtsLoading: boolean;
   districtsError: string | null;
-  setSideContentStatus: (status: boolean) => void;
+  setSideContentStatus: (status: OverlayType | null) => void;
   setLoadingStatus: (status: boolean) => void;
   getDistricts: () => Promise<DistrictsResponse>;
 }
 
 export const useSiteStore = create<SiteState>((set, get) => ({
-  sideContentStatus: false,
+  sideContentStatus: null,
   loadingStatus: false,
   districts: null,
   districtsLoading: false,

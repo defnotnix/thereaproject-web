@@ -1,9 +1,14 @@
+html {
+  width: 100vw;
+  overflow-x: hidden;
+}
+
 [data-mantine-color-scheme="light"] html {
   background: var(--mantine-color-gray-0) !important;
 }
 
 [data-mantine-color-scheme="dark"] html,
 body {
-  background: #0D0D17 !important;
+  background: #0d0d17 !important;
   color: #eaeaea;
 }

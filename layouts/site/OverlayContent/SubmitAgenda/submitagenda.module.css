@@ -1,0 +1,5 @@
+.submitAgendaContainer {
+  width: 100%;
+  height: calc(100vh - 100px);
+  padding: var(--mantine-spacing-md) 0;
+}

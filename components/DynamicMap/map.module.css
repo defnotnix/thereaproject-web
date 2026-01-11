@@ -1,0 +1,59 @@
+.path {
+  stroke: #d66369;
+  stroke-width: 1.28371;
+  stroke-miterlimit: 10;
+  fill: #a72f35;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  opacity: 1;
+}
+
+.path:hover,
+.path.hovered {
+  stroke: white;
+  opacity: 1;
+}
+
+.path.active {
+  fill: #e74c3c;
+  stroke: #c0392b;
+  stroke-width: 2;
+  opacity: 1;
+}
+
+.path.active.hovered {
+  fill: #ff6b54;
+  stroke: white;
+}
+
+/* Dim non-active paths when any district is active */
+svg:has(.path.active) .path:not(.active) {
+  opacity: 0.2;
+}
+
+/* Keep active district visible even when not hovering */
+svg:has(.path.active) .path.active {
+  opacity: 1;
+}
+
+/* Hover effect: dim non-hovered paths but keep hovered at full opacity */
+svg:has(.path.hovered) .path:not(.hovered) {
+  opacity: 0.2;
+}
+
+svg:has(.path.hovered) .path.hovered {
+  opacity: 1;
+}
+
+/* When hovering and a district is active, don't dim the active one */
+svg:has(.path.hovered) .path.active:not(.hovered) {
+  opacity: 1;
+}
+
+svg:has(.path:hover) .path:not(:hover) {
+  opacity: 0.2;
+}
+
+svg:has(.path:hover) .path:hover {
+  opacity: 1;
+}
